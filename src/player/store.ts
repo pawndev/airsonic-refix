@@ -19,6 +19,7 @@ interface State {
   currentTime: number; // position of current track in seconds
   streamTitle: string | null;
   repeat: boolean;
+  repeatCurrentTrack: boolean;
   shuffle: boolean;
   volume: number; // integer between 0 and 1 representing the volume of the player
 }
@@ -39,6 +40,7 @@ export const playerModule: Module<State, any> = {
     currentTime: 0,
     streamTitle: null,
     repeat: localStorage.getItem('player.repeat') !== 'false',
+    repeatCurrentTrack: localStorage.getItem('player.repeatCurrentTrack') === 'true',
     shuffle: localStorage.getItem('player.shuffle') === 'true',
     volume: storedVolume,
   },
@@ -59,6 +61,10 @@ export const playerModule: Module<State, any> = {
     setRepeat(state, enable) {
       state.repeat = enable
       localStorage.setItem('player.repeat', enable)
+    },
+    setRepeatCurrentTrack(state, enable) {
+      state.repeatCurrentTrack = enable
+      localStorage.setItem('player.repeatCurrentTrack', enable)
     },
     setShuffle(state, enable) {
       state.shuffle = enable
@@ -175,6 +181,7 @@ export const playerModule: Module<State, any> = {
     async next({ commit, state, getters }) {
       commit('setQueueIndex', state.queueIndex + 1)
       commit('setPlaying')
+      commit('setRepeatCurrentTrack', false)
       await audio.changeTrack(getters.track)
     },
     async previous({ commit, state, getters }) {
@@ -194,6 +201,9 @@ export const playerModule: Module<State, any> = {
     },
     toggleRepeat({ commit, state }) {
       commit('setRepeat', !state.repeat)
+    },
+    toggleRepeatCurrentTrack({ commit, state }) {
+      commit('setRepeatCurrentTrack', !state.repeatCurrentTrack)
     },
     toggleShuffle({ commit, state }) {
       commit('setShuffle', !state.shuffle)
@@ -246,6 +256,9 @@ export function setupAudio(store: Store<any>, api: API) {
     store.commit('player/setDuration', value)
   }
   audio.onended = () => {
+    if (store.state.player.repeatCurrentTrack) {
+      return store.dispatch('player/previous')
+    }
     if (store.getters['player/hasNext'] || store.state.player.repeat) {
       return store.dispatch('player/next')
     } else {

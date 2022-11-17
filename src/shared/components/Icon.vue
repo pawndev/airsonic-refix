@@ -38,6 +38,7 @@
   import iconRadio from '@iconify-icons/bi/broadcast'
   import iconRefresh from '@iconify-icons/bi/arrow-counterclockwise'
   import iconRepeat from '@iconify-icons/bi/arrow-repeat'
+  import iconRepeatOne from '@iconify-icons/bi/repeat-1'
   import iconShuffle from '@iconify-icons/bi/shuffle'
   import iconSkipEnd from '@iconify-icons/bi/skip-end-fill'
   import iconSkipStart from '@iconify-icons/bi/skip-start-fill'
@@ -68,6 +69,7 @@
     radio: iconRadio.body,
     refresh: iconRefresh.body,
     repeat: iconRepeat.body,
+    'repeat-one': iconRepeatOne.body,
     shuffle: iconShuffle.body,
     'skip-end': iconSkipEnd.body,
     'skip-start': iconSkipStart.body,

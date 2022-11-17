@@ -63,6 +63,11 @@
                         @click="toggleRepeat">
                 <Icon icon="repeat" />
               </b-button>
+              <b-button title="Repeat one"
+                        variant="link" class="m-0" :class="{ 'text-primary': repeatCurrentTrackActive }"
+                        @click="toggleRepeatCurrentTrack">
+                <Icon icon="repeat-one" />
+              </b-button>
             </div>
             <OverflowMenu class="d-md-none">
               <b-dropdown-text>
@@ -125,6 +130,9 @@
       repeatActive(): boolean {
         return this.$store.state.player.repeat
       },
+      repeatCurrentTrackActive(): boolean {
+        return this.$store.state.player.repeatCurrentTrack
+      },
       shuffleActive(): boolean {
         return this.$store.state.player.shuffle
       },
@@ -168,6 +176,9 @@
       },
       toggleRepeat() {
         return this.$store.dispatch('player/toggleRepeat')
+      },
+      toggleRepeatCurrentTrack() {
+        return this.$store.dispatch('player/toggleRepeatCurrentTrack')
       },
       toggleShuffle() {
         return this.$store.dispatch('player/toggleShuffle')

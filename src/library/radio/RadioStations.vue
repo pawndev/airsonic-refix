@@ -49,7 +49,11 @@
       },
     },
     async created() {
-      this.items = await this.$api.getRadioStations()
+      try {
+        this.items = await this.$api.getRadioStations()
+      } catch (e) {
+        this.items = []
+      }
     },
     methods: {
       play(index: number) {

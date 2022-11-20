@@ -68,7 +68,11 @@
       },
     },
     async created() {
-      this.items = await this.$api.getPodcasts()
+      try {
+        this.items = await this.$api.getPodcasts()
+      } catch (e) {
+        this.items = []
+      }
     },
     methods: {
       async refresh() {

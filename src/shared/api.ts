@@ -13,6 +13,7 @@ export interface Track {
   title: string
   duration: number
   favourite: boolean
+  discNumber?: string
   image?: string
   url?: string
   track?: number
@@ -377,6 +378,7 @@ export class API {
       artistId: item.artistId,
       url: this.getStreamUrl(item.id),
       image: this.getCoverArtUrl(item),
+      discNumber: item.discNumber
     }
   }
 

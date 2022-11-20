@@ -12,19 +12,20 @@
       </th>
     </BaseTableHead>
     <tbody>
-      <tr v-for="(item, index) in tracks" :key="index"
+      <tr v-for="(item, index) in tracksByDisc" :key="index"
           :class="{'active': item.id === playingTrackId}"
           :draggable="true" @dragstart="dragstart(item.id, $event)"
-          @click="play(index)">
-        <CellTrackNumber
-          :active="item.id === playingTrackId && isPlaying"
-          :value="item.track || index + 1"
+          @click="item.id && play(index)">
+        <CellTrackNumber v-if="item.id"
+                         :active="item.id === playingTrackId && isPlaying"
+                         :value="item.track || index + 1"
         />
-        <CellTitle :track="item" />
-        <CellArtist v-if="!noArtist" :track="item" />
-        <CellAlbum v-if="!noAlbum" :track="item" />
-        <CellDuration v-if="!noDuration" :track="item" />
-        <CellActions :track="item">
+        <CellDiscNumber v-if="item.discNumber && !item.id" :value="item.discNumber" />
+        <CellTitle v-if="item.id" :track="item" />
+        <CellArtist v-if="!noArtist && item.id" :track="item" />
+        <CellAlbum v-if="!noAlbum && item.id" :track="item" />
+        <CellDuration v-if="!noDuration && item.id" :track="item" />
+        <CellActions v-if="item.id" :track="item">
           <slot name="context-menu" :index="index" :item="item" />
         </CellActions>
       </tr>
@@ -38,9 +39,11 @@
   import CellAlbum from '@/library/track/CellAlbum.vue'
   import CellTrackNumber from '@/library/track/CellTrackNumber.vue'
   import CellActions from '@/library/track/CellActions.vue'
+  import CellDiscNumber from './CellDiscNumber.vue'
   import CellTitle from '@/library/track/CellTitle.vue'
   import BaseTable from '@/library/track/BaseTable.vue'
   import BaseTableHead from '@/library/track/BaseTableHead.vue'
+  import { Track } from '@/shared/api'
 
   export default defineComponent({
     components: {
@@ -52,12 +55,32 @@
       CellAlbum,
       CellArtist,
       CellDuration,
+      CellDiscNumber
     },
     props: {
       tracks: { type: Array, required: true },
       noAlbum: { type: Boolean, default: false },
       noArtist: { type: Boolean, default: false },
-      noDuration: { type: Boolean, default: false },
+      noDuration: { type: Boolean, default: false }
+    },
+    data() {
+      let finalTracks: any[] = []
+      const tracksByDisc: {[discNumber: string]: Track[]} = {}
+      for (const track of (this.tracks as Track[])) {
+        const currentDisc = track.discNumber || 'default'
+        tracksByDisc[currentDisc] = [...(tracksByDisc[currentDisc] ? tracksByDisc[currentDisc] : []), track]
+      }
+      if (Object.keys(tracksByDisc).length === 1 && tracksByDisc.default) {
+        finalTracks = [...tracksByDisc.default]
+      } else {
+        for (const disc in tracksByDisc) {
+          finalTracks = [...finalTracks, { discNumber: disc }, ...tracksByDisc[disc]]
+        }
+      }
+      console.log(finalTracks)
+      return {
+        tracksByDisc: finalTracks,
+      }
     },
     computed: {
       isPlaying(): boolean {

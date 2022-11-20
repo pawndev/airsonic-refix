@@ -20,6 +20,7 @@
   import iconCheck from '@iconify-icons/bi/check'
   import iconChevronRight from '@iconify-icons/bi/chevron-compact-right'
   import iconDiscover from '@iconify-icons/bi/card-text'
+  import iconDisc from '@iconify-icons/bi/disc'
   import iconDownload from '@iconify-icons/bi/download'
   import iconEdit from '@iconify-icons/bi/pencil-square'
   import iconHeart from '@iconify-icons/bi/heart'
@@ -49,6 +50,7 @@
   const icons = {
     check: iconCheck.body,
     'chevron-right': iconChevronRight.body,
+    disc: iconDisc.body,
     discover: iconDiscover.body,
     download: iconDownload.body,
     edit: iconEdit.body,

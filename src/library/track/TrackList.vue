@@ -61,7 +61,8 @@
       tracks: { type: Array, required: true },
       noAlbum: { type: Boolean, default: false },
       noArtist: { type: Boolean, default: false },
-      noDuration: { type: Boolean, default: false }
+      noDuration: { type: Boolean, default: false },
+      displayDisc: { type: Boolean, default: false }
     },
     data() {
       let finalTracks: any[] = []
@@ -79,7 +80,7 @@
       }
       console.log(finalTracks)
       return {
-        tracksByDisc: finalTracks,
+        tracksByDisc: this.displayDisc ? finalTracks : this.tracks,
       }
     },
     computed: {

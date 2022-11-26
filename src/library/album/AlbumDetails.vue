@@ -30,6 +30,9 @@
           <ContextMenuItem icon="plus" @click="addToQueue">
             Add to queue
           </ContextMenuItem>
+          <ContextMenuItem icon="download" @click="download">
+            Download
+          </ContextMenuItem>
         </OverflowMenu>
       </div>
     </Hero>
@@ -85,6 +88,9 @@
       },
       toggleFavourite() {
         return this.$store.dispatch('favourites/toggle', { id: this.id, type: 'album' })
+      },
+      download() {
+        window.location.href = this.$api.getDownloadUrl(this.album?.id)
       },
     }
   })

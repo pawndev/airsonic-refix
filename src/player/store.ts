@@ -104,7 +104,7 @@ export const playerModule: Module<State, any> = {
     },
     clearQueue(state) {
       if (state.queueIndex >= 0) {
-        state.queue = [state.queue[state.queueIndex]]
+        state.queue = state.isPlaying ? [state.queue[state.queueIndex]] : []
         state.queueIndex = 0
         persistQueue(state)
       }
@@ -313,9 +313,11 @@ export function setupAudio(store: Store<any>, api: API) {
     store.watch(
       (state, getters) => getters['player/trackId'],
       () => {
-        const { id, isStream } = store.getters['player/track']
-        if (!isStream) {
-          return api.updateNowPlaying(id)
+        if (store.state.isPlaying) {
+          const { id, isStream } = store.getters['player/track']
+          if (!isStream) {
+            return api.updateNowPlaying(id)
+          }
         }
       })
 
@@ -326,7 +328,8 @@ export function setupAudio(store: Store<any>, api: API) {
         if (
           store.state.player.scrobbled === false &&
           store.state.player.duration > 30 &&
-          store.state.player.currentTime / store.state.player.duration > 0.7
+          store.state.player.currentTime / store.state.player.duration > 0.7 &&
+          store.state.isPlaying
         ) {
           const { id, isStream } = store.getters['player/track']
           if (!isStream) {

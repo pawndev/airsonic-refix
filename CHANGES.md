@@ -11,3 +11,13 @@ This is not a project that I tend to maintain in the long term.
 - Add a button to download an entire album (do not work with subsonic, only navidrome was tested): https://github.com/pawndev/airsonic-refix/pull/4
 - Navidrome does not support radio/podcast, the Not Implemented error code is catch in the fron to avoir a uselesss error panel: https://github.com/pawndev/airsonic-refix/pull/5
 - In the album tracklist view, add empty raw with the current disc number (if any): https://github.com/pawndev/airsonic-refix/pull/6
+- Add keyboard shortcut: https://github.com/pawndev/airsonic-refix/pull/7
+    * m -> toggle mute
+    * r -> toggle repeat
+    * s -> toggle shuffle
+    * / -> focus search
+    * space -> play/pause
+    * ctrl+right -> next
+    * ctrl+left  -> previous
+    * ctrl+up    -> increase volume
+    * ctrl+down  -> decrease volume

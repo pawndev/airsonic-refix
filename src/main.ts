@@ -3,6 +3,7 @@ import Vue from 'vue'
 import { VueConstructor } from 'vue/types/vue'
 import Vuex from 'vuex'
 import Router from 'vue-router'
+import VueHotkey from 'v-hotkey'
 import App from '@/app/App.vue'
 import { components, formatDuration } from '@/shared/components'
 import { setupRouter } from '@/shared/router'
@@ -38,6 +39,7 @@ const createApp = (args: any) => {
 
 Vue.use(Vuex)
 Vue.use(Router)
+Vue.use(VueHotkey)
 
 const authService = new AuthService()
 const api = new API(authService)

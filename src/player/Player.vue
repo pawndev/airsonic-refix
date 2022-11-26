@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'visible': visible}" class="player elevated d-flex">
+  <div :class="{'visible': visible}" class="player elevated d-flex" v-hotkey="hotkey">
     <div class="flex-fill">
       <ProgressBar style="margin-bottom: -5px; margin-top: -9px" />
 
@@ -114,6 +114,11 @@
     components: {
       ProgressBar,
     },
+    data() {
+      return {
+        oldVolume: this.$store.state.player.volume
+      }
+    },
     computed: {
       visible() {
         return this.$store.state.player.queue.length > 0
@@ -151,6 +156,18 @@
           this.track?.artist || this.track?.album,
           'Airsonic (refix)'
         ].filter(x => !!x).join(' • ')
+      },
+      hotkey() {
+        return {
+          space: (this as any).playPause || null,
+          m: (this as any).toggleMute,
+          r: (this as any).toggleRepeat,
+          s: (this as any).toggleShuffle,
+          'ctrl+right': (this as any).next,
+          'ctrl+left': (this as any).previous,
+          'ctrl+up': (this as any).increaseVolume,
+          'ctrl+down': (this as any).decreaseVolume,
+        }
       }
     },
     watch: {
@@ -172,7 +189,25 @@
         return this.$store.dispatch('player/previous')
       },
       setVolume(volume: any) {
-        return this.$store.dispatch('player/setVolume', parseFloat(volume))
+        this.oldVolume = this.$store.state.player.volume
+        const floatVolume = parseFloat(volume)
+        const v = (floatVolume <= 0) ? 0 : (floatVolume >= 1) ? 1 : floatVolume
+        return this.$store.dispatch('player/setVolume', v)
+      },
+      increaseVolume() {
+        const v = this.$store.state.player.volume
+        this.setVolume(v + 0.05)
+      },
+      decreaseVolume() {
+        const v = this.$store.state.player.volume
+        this.setVolume(v - 0.05)
+      },
+      toggleMute() {
+        if (this.isMuted) {
+          this.setVolume(this.oldVolume)
+        } else {
+          this.setVolume(0)
+        }
       },
       toggleRepeat() {
         return this.$store.dispatch('player/toggleRepeat')

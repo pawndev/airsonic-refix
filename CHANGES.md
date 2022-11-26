@@ -21,3 +21,4 @@ This is not a project that I tend to maintain in the long term.
     * ctrl+left  -> previous
     * ctrl+up    -> increase volume
     * ctrl+down  -> decrease volume
+- Ability to disable the radio and podcast with an environment variable: https://github.com/pawndev/airsonic-refix/pull/8

@@ -39,11 +39,11 @@
       <Icon icon="heart" /> Favourites
     </router-link>
 
-    <router-link class="nav-link" :to="{name: 'podcasts'}">
+    <router-link v-if="!config.disablePodcast" class="nav-link" :to="{name: 'podcasts'}">
       <Icon icon="podcast" /> Podcasts
     </router-link>
 
-    <router-link class="nav-link" :to="{name: 'radio'}">
+    <router-link v-if="!config.disableRadio" class="nav-link" :to="{name: 'radio'}">
       <Icon icon="radio" /> Radio
     </router-link>
 
@@ -52,18 +52,23 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue'
+  import { config } from '@/shared/config'
   import Logo from './Logo.vue'
   import PlaylistNav from '@/playlist/PlaylistNav.vue'
+  console.log({ config })
 
   export default defineComponent({
     components: {
       Logo,
       PlaylistNav,
     },
+    computed: {
+      config: () => config,
+    },
     methods: {
       hideMenu() {
         return this.$store.dispatch('hideMenu')
       }
-    },
+    }
   })
 </script>

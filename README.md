@@ -60,6 +60,8 @@ Environment variables:
 - `INSTANCE_NAME` (Optional): The name of this airsonic-refix instance. Will be displayed in the UI.
 - `INSTANCE_SUBNAME` (Optional): The second name that follow INSTANCE_NAME on the right of the logo. Will be displayed in the UI.
 - `DISABLE_SUBNAME` (Optional): Values `true`, `false`. Ability to disable the subname in the navbar.
+- `DISABLE_RADIO` (Optional): Values `true`, `false`. Ability to not show radio on the menu.
+- `DISABLE_PODCAST` (Optional): Values `true`, `false`. Ability to not show podcast on the menu.
 
 
 ### Pre-built bundle
